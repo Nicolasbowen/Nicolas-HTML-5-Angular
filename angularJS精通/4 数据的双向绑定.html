@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据的双向绑定</title>
+    <script src="angular.js"></script>
+</head>
+<body ng-app="myApp" ng-init="sb={name:'jack',age:30}">
+<ez-namecard-editor data="sb"></ez-namecard-editor>
+<div ez-logger data="sb"></div>
+</body>
+</html>
+<script>
+    var myApp = angular.module('myApp',[]);
+    myApp.directive('ezNamecardEditor',function(){
+        return {
+            restrict:"E",//标签形式的指令
+            replace:true,//是否替换指令所在的DOM位置
+            template:'<ul></ul>',
+            link:function(scope,element,attrs){
+                var model = attrs.data;
+                //在模板中添加两个表单
+                element.append('<li>name:<input type="text" field="name"></li>')
+                    .append('<li>age:<input type="text" field="age"></li>');
+                element.find('input').on('keyup',function(ev){
+                    //找到变化的那个input表单的field值
+                    var field = ev.target.getAttribute('field');
+                    scope[model][field] = ev.target.value;
+                    //传播给$watch监听
+                    scope.$apply('');
+                })
+            }
+        }
+    })
+    myApp.directive('ezLogger',function(){
+        return {
+            restrict:'A',
+            link:function(scope,element,attrs){
+                var model = attrs.data;
+                scope.$watch(model,function(nv,ov){
+                    var cnt = JSON.stringify(nv);
+                    element.html('<pre>'+ cnt + '</pre>');
+                },true)
+            }
+        }
+    })
+</script>

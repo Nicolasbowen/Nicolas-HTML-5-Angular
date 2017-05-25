@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<!--ng-开头的属性叫做angular的指令-->
+	<!--ng-app指令：声明应用的主模块-->
+	<body ng-app="">
+		<!--ng-model指令：双向数据绑定指令，可以将
+			input标签的value和作用域中的某个变量进行
+			绑定，当作用域中的值发生变化时，input的value
+			会随之变化，input的value发生变化时，作用域中
+			的对应变量也会变化
+		-->
+		<input ng-model="a" type="number"/>+
+		<input ng-model="b" type="number"/>=
+		<span>{{a+b}}</span>
+	</body>
+	<script src="angular.min.js"></script>
+</html>

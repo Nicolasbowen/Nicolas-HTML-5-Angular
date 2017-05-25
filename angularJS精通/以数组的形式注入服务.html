@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="angular.js"></script>
+</head>
+<body>
+<div id="logger"></div>
+</body>
+</html>
+<script>
+    var myApp = angular.module('myApp',[]);
+    myApp.provider('ezHello',function(){
+        this.$get = function(){
+            return 'hello world';
+        }
+    })
+    angular.element(document).ready(function(){
+        angular.injector(['ng','myApp']).invoke(['ezHello',function(hello){
+            var logger = document.querySelector('#logger');
+            logger.innerHTML = hello.toString();
+        }])
+    })
+</script>

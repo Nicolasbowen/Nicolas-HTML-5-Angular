@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>单项绑定的监听</title>
+    <script src="angular.min.js"></script>
+</head>
+<body ng-app="myApp" ng-init="sb={name:'jack',age:30}">
+<ez-namecard data="sb"></ez-namecard>
+</body>
+</html>
+<script>
+    angular.module('myApp',[])
+        .directive('ezNamecard',function ($rootScope) {
+            return{
+                restrict:'E',
+                replace:true,
+                template:"<div class='namecard'></div>",
+                link:function (scope, element, attrs) {
+                    element.append('<div>名字：<span field="name"></span></span></div>')
+                        .append("<div>年龄 : <span field='age'></span></div>");
+                    scope.$watch(attrs.data,function(nv,ov){
+                        var span = element.find("span");
+                        span[0].textContent = nv.name;
+                        span[1].textContent = nv.age;
+                    },true)
+                    //验证变化
+                    setInterval(function () {
+                        scope.$apply('sb.age=sb.age+1');
+                    },1000)
+                }
+
+            }
+        })
+</script>

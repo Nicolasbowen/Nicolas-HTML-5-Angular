@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>指令里面的scope</title>
+    <script src="angular.js"></script>
+</head>
+<body>
+<div ng-controller="myController">
+    <ez-hello name="{{name}}" age="{{age}}"></ez-hello>
+</div>
+</body>
+</html>
+<script>
+    var myApp = angular.module('myApp',[]);
+    myApp.controller('myController',function($scope){
+        $scope.name = 'lizhiyuan';
+        $scope.age = 40;
+        $scope.change = function(){
+            $scope.name = 'newName';
+            $scope.age = 'newAge';
+        }
+    })
+    myApp.directive('ezHello',function(){
+        return {
+            restrict:'E',
+            replace:true,
+            scope:{
+                dname:'@name',
+                dage:'@age'
+            },
+            template:'<div><button ng-click="change">改变</button> <div>name:{{dname}},age:{{dage}}</div></div>'
+        }
+    })
+</script>

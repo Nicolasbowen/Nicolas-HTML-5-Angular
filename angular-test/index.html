@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input id="i1" value="0" type="number"/>+
+<input id="i2" value="0" type="number"/>=
+<span id="result"></span>
+</body>
+</html>
+<script>
+    var i1 = document.getElementById('i1');
+    var i2 = document.getElementById('i2');
+    var result = document.getElementById('result');
+
+    i1.oninput = function () {
+        result.textContent = i1.value*1 + i2.value*1;
+    }
+    i2.oninput = function () {
+        result.textContent = i1.value*1 + i2.value*1;
+    }
+
+</script>

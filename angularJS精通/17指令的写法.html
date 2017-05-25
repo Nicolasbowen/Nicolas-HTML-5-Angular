@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>指令的写法</title>
+    <script src="angular.js"></script>
+</head>
+<body>
+<div hoverable>我是DIV</div>
+<span hoverable>我是span</span>
+<textarea hoverable>我是表单</textarea>
+</body>
+</html>
+<script>
+    var myApp = angular.module('myApp',[]);
+    myApp.directive('hoverable',function(){
+        return {
+            restrict:'A',
+            link:function(scope,element,attrs){
+                element.on('mouseover',function(){
+                    element.css('outline','#ff0000 dotted thick');
+                })
+                element.on('mouseout',function(){
+                    element.css('outline','none');
+                })
+            }
+        }
+    })
+</script>

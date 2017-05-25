@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	
+	
+	<body ng-app="myapp">
+		
+		<!--ng-controller:声明一个控制器和控制器类型-->
+		<!--一个控制器可以形成一个局部作用域-->
+		<!--angular中的作用域的原型指向它的父作用域，
+			所以访问作用域中不存在的属性时会自动往上层作用域
+			查找这个属性。
+		-->
+		<div ng-controller="ctrl1">
+			<input ng-model="a" type="number"/>
+			<input ng-model="b" type="number"/>
+			<p>{{add()}}</p>
+		</div>
+		
+		<h1>{{a}},{{b}}</h1>
+		
+		
+		<div ng-controller="ctrl2">
+			<input ng-model="a" type="number"/>
+			<input ng-model="b" type="number"/>
+			<!--angular中通过ng-xxxx绑定事件监听
+				事件绑定的函数必须在angular的作用域中
+			-->
+			<button ng-click="times()">相乘</button>
+		</div>
+		
+	</body>
+	
+	
+	<script src="../angular.js"></script>
+	
+	<script>
+//		/**
+//		 * @description 计算两个数字之和
+//		 * @param a {Number} 第一个加数
+//		 * @param b {Number} 第二个加数
+//		 * @return {Number} 两数之和
+//		*/
+//		function add(a,b){
+//			return a+b;
+//		}
+		
+		
+		//创建主模块,
+		//angular.module创建一个模块，第一个参数是模块
+		//名称，第二个参数是模块的依赖模块。
+		var app = angular.module("myapp",[]);
+		
+		//.run:模块的初始化函数(可注入)，会在模块启动时自动调动。
+		
+		//$rootScope是一个注入项，表示根作用域。
+		app.run(function($rootScope){
+			$rootScope.a = 100;
+			$rootScope.b = 200;
+		});
+		
+		//.controller在app模块中创建一个控制器,第一个参数
+		//是控制器名字，第二个参数是控制器构造函数(可注入)
+		//$scope表示当前控制器的作用域
+		app.controller("ctrl1",function($scope){
+			//控制器的作用是为控制器的作用域中的变量
+			//设置初始值。
+			$scope.a = 5;
+			$scope.b = 7;
+//			console.dir($scope);
+			
+			$scope.add = function(){
+				return $scope.a+$scope.b;
+			}
+			
+		});
+		
+		app.controller("ctrl2",function($scope){
+			$scope.times = function(){
+				alert($scope.a*this.b);
+			}
+		});
+		
+		
+		
+		
+		
+		
+	</script>
+	
+</html>

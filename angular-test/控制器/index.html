@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../angular.min.js"></script>
+</head>
+<body ng-app="myapp">
+     <h1>{{a}},{{b}}</h1>
+     <!--ng-controller :声明一个控制器和控制器类型-->
+     <!--一个控制器可以形成一个局部作用域-->
+     <!--angular 中的作用域指向父作用域
+                 访问作用域中不存在的属性时会自动网上曾作用域查找这个属性-->
+     <div ng-controller="ctrl1">
+        <input type="number" ng-model="a"/>
+        <input type="number" ng-model="b"/>
+        <p>{{a+b}}</p>
+     </div>
+     <div ng-controller="ctrl2">
+         <input type="number" ng-model="a"/>
+         <input type="number" ng-model="b"/>
+         <!--// angular 中通过ng-xxx 绑定事件监听
+                         事件绑定的函数必须在angular的作用域中b-->
+         <button ng-click="times()">想成</button>
+     </div>
+
+
+</body>
+</html>
+<script>
+    //创建主模块
+    //angular.module 创建一个模块 第一个参数是模块的名称 第二个参数是模块的依赖模块
+    var app = angular.module('myapp',[]);
+
+    // .run 模块的初始化函数（可注入），会在模块启动时自动调用。
+    //
+
+    //$rootScope 是一个注入项 表示根作用域，
+    app.run(function ($rootScope) {
+        $rootScope.a = 100;
+        $rootScope.b = 200;
+    });
+    //.controller 在app模块中创建一个控制器，第一个参数是控制器名字，第二个参数是控制器构造函数（可注入）
+    //$scope 表示当前控制器的作用域
+    app.controller("ctrl1",function ($scope) {
+        //控制器的作用是为控制器的作用域中的变量
+        //设置初始值 （就是操作$scope ）
+//        $scope.a = 5;
+//        $scope.b = 7;
+    })
+    app.controller('ctrl2',function ($scope) {
+        $scope.times = function () {
+            alert(this.a*this.b);
+        }
+    })
+</script>

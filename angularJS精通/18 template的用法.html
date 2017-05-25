@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>tempalte属性的用法</title>
+    <script src="angular.js"></script>
+</head>
+<body>
+<div ez-hello><p>我是ez-hello里面默认的内容</p></div>
+</body>
+</html>
+<script>
+    var myApp = angular.module('myApp',[]);
+    myApp.directive('ezHello',function(){
+        return {
+            //直接让模板里面的内容替换到指令对应的DOM位置上。
+            replace:true,
+            template:'<span>hello world <span ng-transclude></span></span>',
+            //ng-transclude它的作用是找到指令里面的默认的内容,
+            //然后当你设置transclude:true的时候，它会在模板temaplte中找到ng-transclude
+            //对应的位置并输出.
+            transclude:true,
+        }
+    })
+</script>

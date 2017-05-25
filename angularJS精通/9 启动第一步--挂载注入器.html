@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>启动第一步---挂载注入器</title>
+    <script src="angular.js"></script>
+</head>
+<body>
+<p>下面你会看到一个图片</p>
+<ez-duang></ez-duang>
+</body>
+</html>
+<script>
+    //模拟启动过程
+    //1.创建一个注入器，将ng模块和自己创建的模块，注入到根元素的data属性上，保存起来
+    angular.element(document).ready(function(){
+        var injector = angular.injector(['ng','myApp']);
+        angular.element(document).data("$injector",injector);
+        //2.取出$rootscope,把它也放到根元素的data属性上，保存起来
+        var rootScope = injector.get('$rootScope');
+        angular.element(document).data('$rootScope',rootScope);
+        //3.编译dom子树
+        var compile = injector.get('$compile');
+        compile(document)(rootScope);
+    })
+    var myApp = angular.module('myApp',[]);
+    myApp.directive('ezDuang',function(){
+        return {
+            restrict:'E',
+            replace:true,
+            template:"<img src='http://ww4.sinaimg.cn/bmiddle/757eb2ffjw1eptcr4qobjg209205dthh.gif'>"
+        }
+    })
+</script>

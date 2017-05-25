@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据的单向绑定</title>
+    <script src="angular.js"></script>
+</head>
+<!--ng-init 指令初始化 AngularJS 应用程序变量。-->
+<body ng-app="myApp" ng-init="sb={'name':'jack',age:30}">
+<ez-namecard data="sb"></ez-namecard>
+</body>
+</html>
+<script>
+    var myApp = angular.module('myApp',[]);
+    myApp.directive('ezNamecard',function(){
+        return {
+            restrict:"E",
+            replace:true,
+            template:'<div class="namecard"></div>',
+            link:function(scope,element,attrs){
+                //首先，将显示name 和age的div插入到模板中去
+                element.append('<div>name:<span field="name"></span></div>')
+                    .append('<div>age:<span field="age"></span></div>');
+                //监听sb变量的变量，如果发生变化，通知DOM更新
+                scope.$watch(attrs.data,function(nv,ov){
+                    var span = element.find('span');
+                    span[0].textContent = nv.name;
+                    span[1].textContent = nv.age;
+                },true)
+                //验证变化
+                setInterval(function(){
+                    scope.$apply("sb.age=sb.age + 1");
+                },1000)
+            }
+        }
+    })
+</script>

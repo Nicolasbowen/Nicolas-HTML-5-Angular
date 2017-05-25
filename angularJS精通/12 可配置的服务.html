@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>可配置的服务</title>
+    <script src="angular.js"></script>
+</head>
+<body>
+<button onclick="doCalc()">3+4=?</button>
+<div id="result"></div>
+</body>
+</html>
+<script>
+    //拿到四则运算的这个服务，进行运算，将结果输出.
+    function doCalc(){
+        var injector = angular.injector(['ng','myApp']);
+        var doCalc = injector.get('doCalc');
+        var ret = doCalc.add(3,4);
+        document.querySelector('#result').textContent = ret;
+    }
+    var myApp = angular.module('myApp',[]);
+    //config 完成初始化任务的.
+    //config依赖注入的时候的服务名字，必须要加provider.
+    myApp.config(function(doCalcProvider){
+        doCalcProvider.setLocal('EN');
+    })
+    myApp.provider('doCalc',function(){
+        var currency = '$';
+        this.setLocal = function(l){
+            var repo = {
+                "CN":"¥",
+                "US":"$",
+                "JP":"¥",
+                "EN":"€"
+            };
+            if(repo[l]) currency = repo[l];
+        }
+        this.$get = function(){
+            return {
+                add:function(a,b){return currency + (a + b)},
+                sub:function(a,b){return currency + (a - b)},
+                mult:function(a,b){return currency + (a * b)},
+                dev:function(a,b){return currency + (a / b)}
+            }
+        }
+    })
+</script>

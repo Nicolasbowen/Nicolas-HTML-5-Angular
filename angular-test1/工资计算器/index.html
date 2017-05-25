@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+</head>
+<body ng-app="myapp">
+    <div ng-controller="ctrl">
+           <input ng-model="gongZi" type="number"/><br>
+           <input ng-model="kouChu" type="number"/><br>
+           <p></p>
+               <ul ng-show="gongZi&&kouChu">
+                   <li ng-repeat="shulv in shulvs" ng-show="gongZi&&kouChu">
+                      <p><span>{{shulv.name}}:</span>
+                          <span> {{ gongZi>7662? 7662*shulv.lilv :gongZi*shulv.lilv}}</span>
+                      </p>
+
+                   </li>
+                   <p>{{yingna()}}</p>
+                   <p>个人应纳税所得额:{{yingnae()}}</p>
+               </ul>
+       </div>
+</body>
+<script src="../angular.js"></script>
+<script>
+    angular.module("myapp",[])
+        .controller("ctrl",function($scope){
+            $scope.shulvs = [
+                {
+                    name:"养老保险",
+                    lilv:0.08,
+                },
+                {
+                    name:"医疗保险",
+                    lilv:0.02,
+                },
+                {
+                    name:"失业保险",
+                    lilv:0.005,
+                },
+                {
+                    name:"生育保险",
+                    lilv:0,
+                },
+                {
+                    name:"工伤保险",
+                    lilv:0,
+                },
+                {
+                    name:"住房公基金",
+                    lilv:0.12,
+                },
+            ];
+
+            $scope.sanxians = function () {
+                    var sanxians = 0;
+                angular.forEach($scope.shulvs, function(value, key) {
+//                    console.log(sanxians)
+                    console.log( $scope.shulvs[key].lilv)
+                         sanxians += 7662*$scope.shulvs[key].lilv;
+                       console.log(sanxians)
+                });
+                return sanxians;
+                }
+            $scope.yingna = function () {
+                var yingnas = $scope.gongZi - $scope.sanxians() - $scope.kouChu;
+                return yingnas;
+            }
+            $scope.yingnae = function () {
+                if( $scope.yingna()<0){
+                    return 0
+                }else if(0<=$scope.yingna()<1500){
+                    return $scope.yingna()* 0.03;
+                }else if(1500<$scope.yingna()<4500){
+                    return $scope.yingna() * 0.1 - 105;
+                }else if(4500<$scope.yingna()<9000){
+                    return $scope.yingna() * 0.2 - 555;
+                }else if(9000<$scope.yingna()<35000){
+                    return $scope.yingna() * 0.25 - 1005;
+                }else if(35000<$scope.yingna()<55000){
+                    return $scope.yingna() * 0.3 - 2755;
+                }else if(55000<$scope.yingna()<80000){
+                    return $scope.yingna() * 0.35 - 5055;
+                }else if(80000<$scope.yingna()){
+                    return $scope.yingna() * 0.45 - 13505;
+                }
+
+            }
+        })
+</script>
+</html>

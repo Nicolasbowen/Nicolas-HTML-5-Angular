@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>路由最简单的用法</title>
+    <script src="lib/angular.js"></script>
+    <script src="lib/angular-ui-router.js"></script>
+    <script src="lib/angular-animate.js"></script>
+    <style>
+        .active{
+            background: coral;
+        }
+    </style>
+</head>
+<body>
+<!--状态切换的按钮-->
+<a ui-sref-active="active" ui-sref="home">首页</a>
+<a ui-sref-active="active" ui-sref="prodruct">产品中心</a>
+<a ui-sref-active="active" ui-sref="about">联系我们</a>
+
+<!--增加一个状态切换的视图-->
+<div ui-view=""></div>
+
+</body>
+</html>
+<script>
+    //在新建的模块中，使用ui.router加入到模块的依赖。
+    var myApp = angular.module('myApp',['ui.router','ngAnimate'])
+    //在config里面设置路由，通过调用ui.router模块中的$stateProvider和$urlRouterProvider
+    //两个服务，来完成对于angularJS单页面路由的设置
+    myApp.config(['$stateProvider','$urlRouterProvider',function ($stateProvider,$urlRouterProvider) {
+        //设置默认页面的 默认是home
+        $urlRouterProvider.when('/','home');
+        $stateProvider
+            .state('home',{
+                url:'/',
+                template:'我是首页'
+            })
+            .state('prodruct',{
+                url:'/prodruct',
+                template:'我是产品中心'
+            })
+            .state('about',{
+                url:'/about',
+                template:'关于我们'
+            })
+    }])
+</script>

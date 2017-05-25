@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			.so{
+				background-color: red;
+				color: white;
+			}
+		</style>
+	</head>
+	
+	
+	<body ng-app="myapp">
+		
+		<div ng-controller="ctrl">
+			
+			<button ng-click="showSellout = !showSellout">{{showSellout?"隐藏":"显示"}}已售完</button>
+			
+			<ul>
+				<!--ng-repeat：遍历指令，用于渲染类型相同的
+					多条数据
+				-->
+				<li ng-repeat="book in books" ng-show="!book.sellout||showSellout">
+					《{{book.name}}》，
+					原价：<del>{{book.originPrice}}</del>，
+					现价：{{book.price|yuan}}，
+					<!--ng-if:控制某个元素是否显示-->
+					<span ng-if="book.sellout" class="so">已售完</span>
+				</li>
+			</ul>
+			
+		</div>
+		
+	</body>
+	
+	
+	<script src="../angular.js"></script>
+	<script>
+		
+		angular.module("myapp",[])
+		
+		.controller("ctrl",function($scope){
+			$scope.books = [
+				{
+					name:"三国演义",
+					originPrice:29,
+					price:23456789.50,
+					sellout:false
+				},
+				{
+					name:"水浒传",
+					originPrice:30,
+					price:20.69,
+					sellout:false
+				},
+				{
+					name:"红楼梦",
+					originPrice:35,
+					price:20,
+					sellout:true
+				},
+			];
+		})
+		
+		//.filter在模块中添加一个过滤器,
+		//第一个参数是过滤器名字，第二个参数是过滤函数的
+		//工厂函数(可注入)，它需要返回过滤函数，过滤函数
+		//的参数是要顾虑的值，需要返回过滤之后的值
+		.filter("yuan",function(){
+			return function(value){
+//				var vs = value.toFixed(0);
+				var vs = Math.floor(value)+"";
+				var emptyStr = "";
+				var counter = 0;
+				for (var i = vs.length-1;i>=0;i--) {
+					counter++;
+					emptyStr = vs[i]+emptyStr;
+					if(counter%4==0&&i!=0){
+						emptyStr = "|"+emptyStr;
+					}
+				}
+				
+				var xs = value-Math.floor(value);
+				xs=xs.toFixed(2);
+				xs = xs.substr(1);
+				
+				return "￥"+emptyStr+xs;
+			}
+		})
+		
+		
+		
+		
+		//--------------------------------------
+//		String.prototype.insert = function(location,str){
+//			
+//			var s1 = this.substring(0,location);
+//			var s2 = this.substring(location);
+//			return s1+str+s2;
+//		}
+		
+		
+		
+		
+	</script>
+</html>

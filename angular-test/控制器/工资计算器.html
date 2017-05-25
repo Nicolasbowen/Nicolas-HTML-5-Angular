@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../angular.min.js"></script>
+</head>
+<body ng-app="myapp">
+
+<div ng-controller="ctrl">
+    工资：<input type="number" ng-model="a"/><br>
+    奖金：<input type="number" ng-model="b"/><br>
+    结果：<input type="number" ng-model="c"/><br>
+    <!--结果：<span>{{time()*}}</span> <br>-->
+
+    <li>总额：     <span >{{a>=7662? 7662:a;a+b|yuan}}</span><br></li>
+    <li>养老:8%    <span >{{a>=7662? 7662:a;(a+b)*0.08|yuan}}</span><br></li>
+    <li> 医疗:2%    <span >{{a>=7662? 7662:a;(a+b)*0.02|yuan}}</span></li>
+    <li><span>失业:0.5%</span> <span class="right1">{{a>=7662? 7662:a; a*0.005|yuan}}</span></li>
+    <li><span>工伤:0.00%</span> <span class="right1">{{a>=7662? 7662:a; a*0|yuan}}</span></li>
+    <li><span>生育:0.00%</span> <span class="right1">{{a>=7662? 7662:a; a*0|yuan}}</span></li>
+    <li><span>公积金:8.00%</span> <span class="right1">{{a>=7662? 7662:a; a*0.08|yuan}}</span></li>
+    <li><span>社保统筹</span> <span class="right1"></span>{{a>=7662? 7662:a; a*0.185|yuan}}</li>
+    <li><span>计税工资</span> <span class="right1"></span>{{a>3500? a:"不用交税";a-3500|yuan}}</li>
+
+
+</div>
+
+
+
+</body>
+</html>
+<script>
+    var app = angular.module('myapp',[])
+
+    app.controller("ctrl",function ($scope) {
+        $scope.a=null;
+        $scope.b=null;
+        $scope.c=$scope.d+ $scope.e+$scope.f;
+//        $scope.time=function () {
+//
+//        }
+    })
+    .filter("yuan",function () {
+            return function (value) {
+                var vs = Math.floor(value)+'';
+                var emptyStr = "";
+                var counter = 0;
+                for(var i = vs.length-1;i >= 0;i--){
+                    counter++;
+                    emptyStr = vs[i]+emptyStr;
+                    if(counter%4 == 0&&i!=0){
+                        emptyStr = ","+emptyStr;
+                    }
+                }
+                var xs = value-Math.floor(value);
+                xs = xs.toFixed(2);
+                xs = xs.substr(1);
+                emptyStr = emptyStr+xs;
+
+                return emptyStr;
+            }
+    })
+
+</script>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>angularJS时钟的写法</title>
+    <script src="angular.js"></script>
+</head>
+<body>
+    <ez-colck></ez-colck>
+    <tab></tab>
+    <alert></alert>
+    <slide></slide>
+    <autoplay></autoplay>
+</body>
+</html>
+<script>
+    var myApp = angular.module('myApp',[]);
+    myApp.directive('ezColck',function(){
+        return {
+            restrict:'E',
+            replace:true,
+            template:'<div class="colck"></div>',
+            link:function(scope,element,attrs){
+                console.log(element);
+                console.log(attrs);
+                console.log(scope);
+                setInterval(function(){
+                    var date = new Date();
+                    element.text(date);
+                },1000)
+            }
+        }
+    })
+</script>

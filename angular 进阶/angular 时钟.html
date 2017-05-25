@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="angular.min.js"></script>
+</head>
+<body>
+<!--angular  时钟性能更好-->
+<ez-clock></ez-clock>
+</body>
+</html>
+<script>
+var app = angular.module("myapp",[])
+    //自定义标签？
+    .directive('ezClock',function () {
+        return {
+            //指令的形式 标签
+            restrict:'E',
+            replace:true,
+            template:'<div class="colck"></div>',
+            link:function(scope,element,attrs){
+                console.log(scope);//作用域
+                console.log(element);//标签
+                console.log(attrs);//属性
+                setInterval(function(){
+                    //获取当前时间
+                    var d = new Date();
+
+                    //element对应引用该指令的DOM对象的jqLite封装
+                    element.text(d.toString());
+                },1000);
+            }
+        }
+    })
+</script>

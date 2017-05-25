@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body ng-app="myapp">
+   <div ng-controller="ctrl">
+       <p>《{{books[0].name}}》.原价{{books[0].originPrice}}</p>
+       <button ng-click="showSellout= !showSellout">{{showSellout?"隐藏":"显示"}}显示已售完</button>
+       <ul>
+           <!--ng-repeat ：遍历指令 用于选择类型相同的多条数据
+            ng-repeat="book in books|filter:comp"-->
+           <li ng-repeat="book in books" ng-show="!book.sellout||showSellout">
+               《{{book.name}}》,
+               原价：<del>{{book.originPrice}}</del>,
+               <!--//数字 格式的过滤器 10.999.999-->
+               <!--现价：{{book.price|currency:'￥':2}},-->
+               现价：{{book.price|yuan}},
+               <!--<span>{{book.sellout?'已售完':''}}</span>-->
+               <!--ng-if 通过一个bule值 控制耨个元素是否显示-->
+               <!--<span ng-if="book.sellout" class="so">已售完</span>-->
+               <!--<span ng-else>未售完</span>-->
+               <span ng-show="book.sellout" class="so"></span>
+           </li>
+       </ul>
+   </div>
+</body>
+<script src="../angular.min.js">
+
+</script>
+<script>
+    //添加个模块
+    angular.module('myapp',[])
+        //模块中添加个控制器
+        .controller('ctrl',function ($scope) {
+
+//            $scope.comp = function (o) {
+//                return !o.sellout || $scope.showSellout;
+//            }
+
+            $scope.books=[
+                {
+                    name:'三毛',
+                    originPrice:29,
+                    price:19999999.55,
+                    sellout:false
+                },
+                {
+                    name:'水浒传',
+                    originPrice:30,
+                    price:20,
+                    sellout:true
+                },
+                {
+                    name:'金',
+                    originPrice:40,
+                    price:31,
+                    sellout:true
+                }
+            ]
+        })
+        //在模块中 添加个过滤器
+        //第一个参数是过滤器名字  第二个参数是过滤函数的工厂函数
+        //工厂函数（可注入），它需要返回过滤函数，过滤函数的参数是要过滤的值，
+        //需要返回过滤之后的值
+        .filter("yuan",function () {
+            return function (value) {
+                var vs = Math.floor(value)+'';
+//                var vs = value+'';
+                var emptyStr = "";
+                var counter = 0;
+                for(var i = vs.length-1;i >= 0;i--){
+                    counter++;
+                    emptyStr = vs[i]+emptyStr;
+                    if(counter%4 == 0&&i!=0){
+                        emptyStr = "|"+emptyStr;
+                    }
+                }
+                var xs = value-Math.floor(value);
+                xs = xs.toFixed(2);
+                xs = xs.substr(1);
+                emptyStr = emptyStr+xs;
+
+                return emptyStr;
+            }
+        })
+//        String.prototype.insert = function (location),str {
+//            if(location>this.length-1){
+//                location=this.length-1
+//            }
+//            var s1 = this.substring(0,location);
+//            var s2 = this.substring(location);
+//            return s1+str+s2;
+//        }
+//        var s = "i lve you"
+//        var ns = s.insert(3,'o')
+//    console.log(ns)
+</script>
+</html>

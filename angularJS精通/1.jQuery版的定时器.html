@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-2.0.3.js"></script>
+</head>
+<body>
+<div id="time"></div>
+</body>
+</html>
+<script>
+    $(function(){
+        //1.当文档加载完毕的时候运行JQ代码
+        //2.写一个定时器
+        setInterval(function(){
+            //3.去更新定时器所在DOM的内容
+            var date = new Date();
+            $('#time').text(date);
+        },1000)
+    })
+</script>

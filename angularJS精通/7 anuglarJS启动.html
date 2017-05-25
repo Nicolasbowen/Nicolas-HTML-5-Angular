@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <title>angualrJS启动</title>
+    <script src="angular.js"></script>
+</head>
+<body ng-app="myApp">
+<p>下面，你应该能看到一张图片</p>
+<ez-duang></ez-duang>
+</body>
+</html>
+<script>
+    var myApp = angular.module('myApp',[]);
+    myApp.directive('ezDuang',function(){
+        return {
+            restrict:'E',
+            replace:true,
+            template:"<img src='http://ww4.sinaimg.cn/bmiddle/757eb2ffjw1eptcr4qobjg209205dthh.gif'>"
+        }
+    })
+</script>

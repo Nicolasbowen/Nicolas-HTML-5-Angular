@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自己创建的服务</title>
+    <script src="angular.js"></script>
+</head>
+<body>
+<div id="logger"></div>
+</body>
+</html>
+<script>
+    var myApp = angular.module('myApp',[])
+    myApp.provider('ezHello',function(){
+        this.$get = function(){
+            return 'hello world';
+        }
+    })
+    //把自己创建的服务打印出来
+    angular.element(document).ready(function(){
+        angular.injector(['ng','myApp']).invoke(function(ezHello){
+            var logger = document.querySelector('#logger');
+            logger.innerHTML = ezHello.toString();
+        })
+    })
+
+</script>

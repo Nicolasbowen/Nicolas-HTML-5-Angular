@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>单项绑定的监听</title>
+    <script src="angular.min.js"></script>
+</head>
+<body>
+<div id="logger"></div>
+</body>
+</html>
+<script>
+    //注册服务组件
+    var myApp=angular.module('myApp',[])
+    myApp.provider('ezHello',function () {
+        this.$get = function () {
+            return 'hello world';
+        }
+    })
+    //把自己创建的副武器打印出来
+    angular.element(document).ready(function () {
+        angular.injector(['ng','myApp']).invoke(function (ezHello) {
+            var logger = document.querySelector('#logger');
+            logger.innerHTML = ezHello.toString();
+        })
+    })
+</script>

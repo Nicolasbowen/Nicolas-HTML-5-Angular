@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./jquery-3.2.1.min.js"></script>
+</head>
+<body>
+  <div id="time"></div>
+</body>
+</html>
+<script>
+    $(function () {
+        // 1.文档加载完后运行jquery 代码
+        //2.定时器
+        setInterval(function () {
+            var date = new Date();
+            $('#time').text(date)
+        })
+    })
+    //不停的
+</script>

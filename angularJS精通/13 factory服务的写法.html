@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>factory服务的写法</title>
+    <script src="angular.js"></script>
+</head>
+<body>
+<button onclick="doCalc()">3+4=?</button>
+<div id="result"></div>
+</body>
+</html>
+<script>
+    function doCalc(){
+        var injector = angular.injector(['ng','myApp']);
+        var doCalc = injector.get('doCalc');
+        var ret = doCalc.add(3,4);
+        document.querySelector('#result').textContent = ret;
+    }
+    var myApp = angular.module('myApp',[]);
+    //返回一个实例对象，里面有关于服务的各种方法.
+    //跟provider的区别在于，provider必须写在this.$get方法中.
+    myApp.factory('doCalc',function(){
+        return {
+            add:function(a,b){return a+b},
+            sub:function(a,b){return a-b},
+            mult:function(a,b){return a*b},
+            dev:function(a,b){return a/b}
+        }
+    })
+</script>

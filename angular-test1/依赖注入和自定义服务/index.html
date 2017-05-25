@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>yilai</title>
+</head>
+<body ng-app="myapp">
+<div ng-controller="ctrl">
+    <input ng-model="num" type="number"/>! =
+    <span ng-show="num">{{jc(num)}}</span>
+</div>
+<div ng-controller="c2">
+    <label>半径</label>
+    <input ng-model="r"/>
+    <span>面积:{{mianji(r)}}</span>
+    <span>周长:{{zhouchang(r)}}</span>
+</div>
+
+
+<div ng-controller="c3">
+    <p>{{num}}</p>
+</div>
+</body>
+<script src="../angular.js"></script>
+<script>
+    angular.module("myapp",[])
+    //在模块中，创建一个服务,第一个参数是服务名字，第二个参数是服务的具体内容，可以是一个值，也可以是一个函数
+    //
+        .value('jiecheng',function (n) {
+            var jiecheng = 1;
+            for(var i =2;i<=n;i++){
+                jiecheng = jiecheng * i;
+            }
+            return jiecheng;
+        })
+        //.controller 的构造函数是可注入的函数，可以在参数中注入其他服务，把服务名作为函数的参数即可。
+        .controller('ctrl',function ($scope,jiecheng) {
+//            $scope.jiecheng = function (n) {
+//              if(typeof n != "number"){
+//                  return "类型错误"
+//              }
+//                var jiecheng = 1;
+//                for(var i =2;i<=n;i++){
+//                    jiecheng = jiecheng * i;
+//                }
+//                return jiecheng;
+                 $scope.num = 0;
+                 $scope.jc = jiecheng;
+//            }
+        })
+        .value('pi',3.14)
+        //模块中创建一个服务，第一个参数是服务名，第二个参数是服务的工厂函数 （可注入），
+        //工厂函数需要返回创建的服务
+        .factory("yuanmianji",function (pi) {
+            return function (r) {
+                return r *r *pi;
+            }
+        })
+        .factory("yuanzhouchang",function (pi) {
+            return function (r) {
+                return 2 *r *pi;
+            }
+        })
+        .controller('c2',function ($scope,yuanmianji,yuanzhouchang) {
+            $scope.r = 0;
+//            $scope.mianji = function (r) {
+//               return pi * $scope.r * $scope.r;
+//
+//            }
+//            $scope.zhouchang = function (r) {
+//             return  pi * $scope.r *2;
+//            }
+            $scope.mianji = yuanmianji;
+            $scope.zhouchang = yuanzhouchang;
+
+        })
+        //angular 中采用$digist进行作用域检查，从而进行数据绑定，所以在angular中尽量
+//        不要使用非angular提供的异步函数，如果要使用，需要在数据修改后，手动调节$digist
+//        .controller('c2',function ($scope,yuanmianji,$timeout) {
+//
+//        })
+//        }
+//.service 创建一个服务，第一个参数是服务名，第二个参数是服务的构造函数
+//    .provider 创建一个可配置的服务（半成品的服务），使用前必须在config中进行配置
+
+// 依赖注入的另一中写法，这种写法可以保证代码被压缩之后，依然能够正常注入
+        .controller('c3',["$scope","pi",function (s, p) {
+            s.num = p;
+        }])
+</script>
+</html>
